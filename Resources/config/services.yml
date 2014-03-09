@@ -1,0 +1,15 @@
+parameters:
+    ticketpark.twig.date_extension.class: Ticketpark\LocaleBundle\Twig\DateExtension
+    ticketpark.twig.locale_extension.class: Ticketpark\LocaleBundle\Twig\CountryExtension
+
+services:
+    ticketpark.twig.date_extension:
+        class: %ticketpark.twig.date_extension.class%
+        arguments: [@translator]
+        tags:
+            - { name: twig.extension }
+
+    ticketpark.twig.locale_extension:
+           class: %ticketpark.twig.locale_extension.class%
+           tags:
+               - { name: twig.extension }

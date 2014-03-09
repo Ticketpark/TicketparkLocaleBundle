@@ -1,0 +1,25 @@
+{
+    "name": "ticketpark/locale-bundle",
+    "type": "symfony-bundle",
+    "description": "This bundle adds functionalities to simplify the handling of localized strings",
+    "keywords": ["localization", "internationalization", "i18n"],
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Ticketpark contributors and others",
+            "homepage": "https://github.com/Ticketpark/TicketparkLocaleBundle/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "twig/extensions": "1.0.*",
+        "symfony/intl": "~2.3"
+    },
+
+    "autoload": {
+        "psr-0": { "Ticketpark\\LocaleBundle": "" }
+    },
+
+    "target-dir": "Ticketpark/LocaleBundle"
+}
