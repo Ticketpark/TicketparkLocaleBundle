@@ -11,7 +11,6 @@ This bundle adds functionalities to simplify the handling of localized strings
     * Function: Display timespans as localized strings
 
 ## Installation
-
 Add TicketparkFileBundle in your composer.json:
 
 ```js
@@ -87,7 +86,6 @@ public function registerBundles()
 
 
 ## License
-
 
 This bundle is under the MIT license. See the complete license in the bundle:
 
