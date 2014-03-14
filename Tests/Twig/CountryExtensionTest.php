@@ -24,7 +24,6 @@ class CountryExtensionTest extends \PHPUnit_Framework_TestCase
             array('DE', 'en', 'Germany'),
             array('de', 'de', 'Deutschland'),
             array('DE', 'fr', 'Allemagne'),
-            array('DE', null, 'Germany'),
             array(null, 'en', null),
         );
     }

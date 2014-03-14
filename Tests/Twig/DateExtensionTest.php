@@ -19,7 +19,7 @@ class DateExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testDateFilter(\DateTime $date, $expected, $locale)
     {
-        $this->assertEquals($this->dateExtension->dateFilter($date, $locale), $expected);
+        $this->assertEquals($expected, $this->dateExtension->dateFilter($date, $locale));
     }
 
     public function getDates()
@@ -36,7 +36,7 @@ class DateExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testDateLongFilter(\DateTime $date, $expected, $locale)
     {
-        $this->assertEquals($this->dateExtension->dateLongFilter($date, $locale), $expected);
+        $this->assertEquals($expected, $this->dateExtension->dateLongFilter($date, $locale));
     }
 
     public function getLongDates()
@@ -45,6 +45,23 @@ class DateExtensionTest extends \PHPUnit_Framework_TestCase
             array(new \DateTime('2013-05-27 20:00:00'), 'Montag, 27. Mai 2013, 20:00' , 'de'),
             array(new \DateTime('2013-05-27 20:00:00'), 'Monday, May 27, 2013, 8:00 PM', 'en'),
             array(new \DateTime('2013-05-27 20:00:00'), 'lundi, 27 mai 2013, 20:00', 'fr'),
+        );
+    }
+
+    /**
+     * @dataProvider getTimezones
+     */
+    public function testConvertTimezoneFilter(\DateTime $date, $target, $origin, $expected)
+    {
+        $this->assertEquals($expected, $this->dateExtension->convertTimezoneFilter($date, $target, $origin)->format('Y-m-d H:i:s'));
+    }
+
+    public function getTimezones()
+    {
+        return array(
+            array(new \DateTime('2013-05-27 20:00:00'), 'America/New_York', 'Europe/Zurich', '2013-05-27 14:00:00'),
+            array(new \DateTime('2013-05-27 20:00:00'), 'Europe/Zurich', 'America/New_York', '2013-05-28 02:00:00'),
+            array(new \DateTime('2016-02-28 00:00:00'), 'Asia/Singapore', 'Europe/Zurich', '2016-02-28 07:00:00'),
         );
     }
 
@@ -71,7 +88,7 @@ class DateExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testTimespanShortFunction(\DateTime $date1, \DateTime $date2, $expected, $locale)
     {
-        $this->assertEquals($this->dateExtension->timespanShort($date1, $date2, $locale), $expected);
+        $this->assertEquals($expected, $this->dateExtension->timespanShort($date1, $date2, $locale));
     }
 
     public function getTimespanShortFunctionDates()

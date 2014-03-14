@@ -4,11 +4,15 @@ This bundle adds functionalities to simplify the handling of localized strings
 
 ## Functionalities
 * Country (TwigExtension)
-    * Filter: Convert country short codes to localized full country names
+    * Filters:
+        * Convert country short codes to localized full country names
     
 * Dates (Twig Extension)
-    * Filter: Display dates as localized strings
-    * Function: Display timespans as localized strings
+    * Filters:
+        * Display dates as localized strings
+        * Convert timezones of DateTime objects in directly Twig
+    * Functions:
+        * Display timespans as localized strings
 
 ## Installation
 Add TicketparkFileBundle in your composer.json:
@@ -65,6 +69,23 @@ public function registerBundles()
 // outputs long localized string in specific locale: " Sunday, March 9, 2014, 9:03 PM"
 {{ dateTimeObject|tpDateLong('en') }} 
 ```
+### Twig - timezone filter
+The timezone filter always returns a DateTime object which must be converted to a string with another filter.
+``` php
+// convert a datetime object from it's current timezone to a different one
+{{ dateTimeObject|convertTimezone('America/New_York')|tpDate }}
+
+// convert a datetime object from it's current timezone to your default timezone
+{{ dateTimeObject|convertTimezone()|tpDate }}
+
+// convert a datetime object by setting its current timezone first
+// and the converting it to a different one.
+// This may be useful if you have a localized datetime saved in an entity along
+// with its timezone.
+// Example: event.start|convertTimezone(user.timezone, event.venue.timezone)
+{{ dateTimeObject|convertTimezone('America/New_York', 'Asia/Singapore')|tpDate }}
+```
+
 ### Twig - timespan functions
 ``` php
 // output localized string like "Sonntag, 9. März 2014 bis Donnerstag, 12. Juni 2014" in current locale

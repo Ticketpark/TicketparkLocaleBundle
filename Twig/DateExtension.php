@@ -16,6 +16,7 @@ class DateExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFilter('tpDate', array($this, 'dateFilter')),
             new \Twig_SimpleFilter('tpDateLong', array($this, 'dateLongFilter')),
+            new \Twig_SimpleFilter('convertTimezone', array($this, 'convertTimezoneFilter')),
         );
     }
 
@@ -101,6 +102,30 @@ class DateExtension extends \Twig_Extension
         $result = $formatter->format($date);
 
         return $result;
+    }
+
+    /**
+     * Convert datetime between timezones
+     *
+     * @param \DateTime $dateTime
+     * @param string|null $targetTimezone
+     * @param string|null $originTimezone
+     *
+     * @return \DateTime
+     */
+    public function convertTimezoneFilter(\DateTime $dateTime, $targetTimezone=null, $originTimezone=null)
+    {
+        if (null !== $originTimezone) {
+           $dateTime = new \DateTime($dateTime->format('Y-m-d H:i:s'), new \DateTimeZone($originTimezone));
+        }
+
+        if (null !== $targetTimezone) {
+            $dateTime->setTimezone(new \DateTimeZone($targetTimezone));
+        } else {
+            $dateTime = new \DateTime($dateTime->format('Y-m-d H:i:s'), new \DateTimeZone(date_default_timezone_get()));
+        }
+
+        return $dateTime;
     }
 
     /**
