@@ -38,7 +38,7 @@ class DateExtension extends \Twig_Extension
      * @param string    $locale
      * @return string
      */
-    public function dateFilter($date, $locale=null)
+    public function dateFilter($date, $locale=null, $addWeekday=true, $addTime = true)
     {
         if (null === $locale) {
             $locale = \Locale::getDefault();
@@ -48,7 +48,13 @@ class DateExtension extends \Twig_Extension
             $date = new \DateTime();
         }
 
-        $formatter = new \IntlDateFormatter($locale, \IntlDateFormatter::SHORT, \IntlDateFormatter::SHORT);
+        if ($addTime) {
+            $time = \IntlDateFormatter::SHORT;
+        } else {
+            $time = \IntlDateFormatter::NONE;
+        }
+
+        $formatter = new \IntlDateFormatter($locale, \IntlDateFormatter::SHORT, $time);
         $pattern = $formatter->getPattern();
 
         //add comma before hours
@@ -58,7 +64,10 @@ class DateExtension extends \Twig_Extension
         $pattern = preg_replace('/(y{1,})/', 'yyyy', $pattern);
 
         //prepend pattern with weekday
-        $pattern = 'E '.$pattern;
+        if ($addWeekday) {
+            $pattern = 'E '.$pattern;
+        }
+
 
         $formatter->setPattern($pattern);
         $result = $formatter->format($date);
@@ -79,7 +88,7 @@ class DateExtension extends \Twig_Extension
      * @param string    $locale
      * @return string
      */
-    public function dateLongFilter($date, $locale=null)
+    public function dateLongFilter($date, $locale=null, $addWeekday=true, $addTime=true)
     {
         if (null === $locale) {
             $locale = \Locale::getDefault();
@@ -89,43 +98,27 @@ class DateExtension extends \Twig_Extension
             $date = new \DateTime();
         }
 
-        $formatter = new \IntlDateFormatter($locale, \IntlDateFormatter::LONG, \IntlDateFormatter::SHORT);
+        if ($addTime) {
+            $time = \IntlDateFormatter::SHORT;
+        } else {
+            $time = \IntlDateFormatter::NONE;
+        }
+
+        $formatter = new \IntlDateFormatter($locale, \IntlDateFormatter::LONG, $time);
         $pattern = $formatter->getPattern();
 
         //add comma before hours
         $pattern = preg_replace('/ (h)/i', ', ${1}', $pattern);
 
         //prepend pattern with weekday
-        $pattern = 'EEEE, '.$pattern;
+        if ($addWeekday) {
+            $pattern = 'EEEE, '.$pattern;
+        }
 
         $formatter->setPattern($pattern);
         $result = $formatter->format($date);
 
         return $result;
-    }
-
-    /**
-     * Convert datetime between timezones
-     *
-     * @param \DateTime $dateTime
-     * @param string|null $targetTimezone
-     * @param string|null $originTimezone
-     *
-     * @return \DateTime
-     */
-    public function convertTimezoneFilter(\DateTime $dateTime, $targetTimezone=null, $originTimezone=null)
-    {
-        if (null !== $originTimezone) {
-           $dateTime = new \DateTime($dateTime->format('Y-m-d H:i:s'), new \DateTimeZone($originTimezone));
-        }
-
-        if (null !== $targetTimezone) {
-            $dateTime->setTimezone(new \DateTimeZone($targetTimezone));
-        } else {
-            $dateTime = new \DateTime($dateTime->format('Y-m-d H:i:s'), new \DateTimeZone(date_default_timezone_get()));
-        }
-
-        return $dateTime;
     }
 
     /**
@@ -186,6 +179,30 @@ class DateExtension extends \Twig_Extension
     public function timespanShort(\DateTime $date1, \DateTime $date2, $locale=null)
     {
         return $this->timespan($date1, $date2, $locale, true);
+    }
+    
+	/**
+     * Convert datetime between timezones
+     *
+     * @param \DateTime $dateTime
+     * @param string|null $targetTimezone
+     * @param string|null $originTimezone
+     *
+     * @return \DateTime
+     */
+    public function convertTimezoneFilter(\DateTime $dateTime, $targetTimezone=null, $originTimezone=null)
+    {
+        if (null !== $originTimezone) {
+           $dateTime = new \DateTime($dateTime->format('Y-m-d H:i:s'), new \DateTimeZone($originTimezone));
+        }
+ 
+        if (null !== $targetTimezone) {
+            $dateTime->setTimezone(new \DateTimeZone($targetTimezone));
+        } else {
+            $dateTime = new \DateTime($dateTime->format('Y-m-d H:i:s'), new \DateTimeZone(date_default_timezone_get()));
+        }
+ 
+        return $dateTime;
     }
 
     public function getName()

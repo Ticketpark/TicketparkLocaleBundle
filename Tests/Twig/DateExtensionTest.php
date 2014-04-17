@@ -19,7 +19,7 @@ class DateExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testDateFilter(\DateTime $date, $expected, $locale)
     {
-        $this->assertEquals($expected, $this->dateExtension->dateFilter($date, $locale));
+        $this->assertEquals($this->dateExtension->dateFilter($date, $locale), $expected);
     }
 
     public function getDates()
@@ -28,6 +28,57 @@ class DateExtensionTest extends \PHPUnit_Framework_TestCase
             array(new \DateTime('2013-05-27 20:00:00'), 'Mo. 27.05.2013, 20:00' , 'de'),
             array(new \DateTime('2013-05-27 20:00:00'), 'Mon 5/27/2013, 8:00 PM', 'en'),
             array(new \DateTime('2013-05-27 20:00:00'), 'Lun. 27/05/2013, 20:00', 'fr'),
+        );
+    }
+
+    /**
+     * @dataProvider getDatesWithoutWeekday
+     */
+    public function testDateFilterWithoutWeekday(\DateTime $date, $expected, $locale)
+    {
+        $this->assertEquals($expected, $this->dateExtension->dateFilter($date, $locale, false));
+    }
+
+    public function getDatesWithoutWeekday()
+    {
+        return array(
+            array(new \DateTime('2013-05-27 20:00:00'), '27.05.2013, 20:00' , 'de'),
+            array(new \DateTime('2013-05-27 20:00:00'), '5/27/2013, 8:00 PM', 'en'),
+            array(new \DateTime('2013-05-27 20:00:00'), '27/05/2013, 20:00', 'fr'),
+        );
+    }
+
+    /**
+     * @dataProvider getDatesWithoutTime
+     */
+    public function testDateFilterWithoutTime(\DateTime $date, $expected, $locale)
+    {
+        $this->assertEquals($expected, $this->dateExtension->dateFilter($date, $locale, true, false));
+    }
+
+    public function getDatesWithoutTime()
+    {
+        return array(
+            array(new \DateTime('2013-05-27 20:00:00'), 'Mo. 27.05.2013' , 'de'),
+            array(new \DateTime('2013-05-27 20:00:00'), 'Mon 5/27/2013', 'en'),
+            array(new \DateTime('2013-05-27 20:00:00'), 'Lun. 27/05/2013', 'fr'),
+        );
+    }
+
+    /**
+     * @dataProvider getDatesWithoutWeekdayAndTime
+     */
+    public function testDateFilterWithoutWeekdayAndTime(\DateTime $date, $expected, $locale)
+    {
+        $this->assertEquals($expected, $this->dateExtension->dateFilter($date, $locale, false, false));
+    }
+
+    public function getDatesWithoutWeekdayAndTime()
+    {
+        return array(
+            array(new \DateTime('2013-05-27 20:00:00'), '27.05.2013' , 'de'),
+            array(new \DateTime('2013-05-27 20:00:00'), '5/27/2013', 'en'),
+            array(new \DateTime('2013-05-27 20:00:00'), '27/05/2013', 'fr'),
         );
     }
 
@@ -49,6 +100,57 @@ class DateExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider getLongDatesWithoutWeekday
+     */
+    public function testDateLongFilterWithoutWeekday(\DateTime $date, $expected, $locale)
+    {
+        $this->assertEquals($expected, $this->dateExtension->dateLongFilter($date, $locale, false));
+    }
+
+    public function getLongDatesWithoutWeekday()
+    {
+        return array(
+            array(new \DateTime('2013-05-27 20:00:00'), '27. Mai 2013, 20:00' , 'de'),
+            array(new \DateTime('2013-05-27 20:00:00'), 'May 27, 2013, 8:00 PM', 'en'),
+            array(new \DateTime('2013-05-27 20:00:00'), '27 mai 2013, 20:00', 'fr'),
+        );
+    }
+
+    /**
+     * @dataProvider getLongDatesWithoutTime
+     */
+    public function testDateLongFilterWithoutTime(\DateTime $date, $expected, $locale)
+    {
+        $this->assertEquals($expected, $this->dateExtension->dateLongFilter($date, $locale, true, false));
+    }
+
+    public function getLongDatesWithoutTime()
+    {
+        return array(
+            array(new \DateTime('2013-05-27 20:00:00'), 'Montag, 27. Mai 2013' , 'de'),
+            array(new \DateTime('2013-05-27 20:00:00'), 'Monday, May 27, 2013', 'en'),
+            array(new \DateTime('2013-05-27 20:00:00'), 'lundi, 27 mai 2013', 'fr'),
+        );
+    }
+
+    /**
+     * @dataProvider getLongDatesWithoutWeekdayAndTime
+     */
+    public function testDateLongFilterWithoutWeekdayAndTime(\DateTime $date, $expected, $locale)
+    {
+        $this->assertEquals($expected, $this->dateExtension->dateLongFilter($date, $locale, false, false));
+    }
+
+    public function getLongDatesWithoutWeekdayAndTime()
+    {
+        return array(
+            array(new \DateTime('2013-05-27 20:00:00'), '27. Mai 2013' , 'de'),
+            array(new \DateTime('2013-05-27 20:00:00'), 'May 27, 2013', 'en'),
+            array(new \DateTime('2013-05-27 20:00:00'), '27 mai 2013', 'fr'),
+        );
+    }
+
+	/**
      * @dataProvider getTimezones
      */
     public function testConvertTimezoneFilter(\DateTime $date, $target, $origin, $expected)
@@ -70,7 +172,7 @@ class DateExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testTimespanFunction(\DateTime $date1, \DateTime $date2, $expected, $locale)
     {
-        $this->assertEquals($this->dateExtension->timespan($date1, $date2, $locale), $expected);
+        $this->assertEquals($expected, $this->dateExtension->timespan($date1, $date2, $locale));
     }
 
     public function getTimespanFunctionDates()
