@@ -2,11 +2,11 @@
 
 namespace Ticketpark\LocaleBundle\Twig;
 
-use Symfony\Bundle\FrameworkBundle\Translation\Translator;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class DateExtension extends \Twig_Extension
 {
-    public function __construct(Translator $translator)
+    public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
