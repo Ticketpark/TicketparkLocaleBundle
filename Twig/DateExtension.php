@@ -60,6 +60,9 @@ class DateExtension extends \Twig_Extension
         //add comma before hours
         $pattern = preg_replace('/ (h)/i', ', ${1}', $pattern);
 
+        //remove any double commas
+        $pattern = str_replace(',,', '', $pattern);
+
         //display 4-digit years
         $pattern = preg_replace('/(y{1,})/', 'yyyy', $pattern);
 
