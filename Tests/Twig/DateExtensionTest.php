@@ -205,7 +205,7 @@ class DateExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function getTranslatorMock()
     {
-        $translator = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Translation\Translator')
+        $translator = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')
             ->disableOriginalConstructor()
             ->setMethods(array('trans'))
             ->getMock();
