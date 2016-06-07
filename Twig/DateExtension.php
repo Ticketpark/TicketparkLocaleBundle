@@ -158,7 +158,7 @@ class DateExtension extends \Twig_Extension
 
         //Same day?
         $diff = $earlier->diff($later);
-        if (0 === $diff->d) {
+        if (0 === (int) $diff->format('%a')) {
 
             return $formatter->format($earlier);
         }
