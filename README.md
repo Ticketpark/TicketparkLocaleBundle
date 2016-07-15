@@ -1,5 +1,7 @@
 # TicketparkLocaleBundle
 
+[![Build Status](https://travis-ci.org/Ticketpark/TicketparkLocaleBundle.svg?branch=master)](https://travis-ci.org/Ticketpark/TicketparkLocaleBundle)
+
 This bundle adds functionalities to simplify the handling of localized strings
 
 ## Functionalities
