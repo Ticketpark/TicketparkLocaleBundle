@@ -61,7 +61,7 @@ class DateExtension extends \Twig_Extension
         $pattern = preg_replace('/ (h)/i', ', ${1}', $pattern);
 
         //remove any double commas
-        $pattern = str_replace(',,', '', $pattern);
+        $pattern = preg_replace('/[,]+/', ',', $pattern);
 
         //display 4-digit years
         $pattern = preg_replace('/(y{1,})/', 'yyyy', $pattern);
@@ -70,7 +70,6 @@ class DateExtension extends \Twig_Extension
         if ($addWeekday) {
             $pattern = 'E '.$pattern;
         }
-
 
         $formatter->setPattern($pattern);
         $result = $formatter->format($date);
@@ -109,6 +108,10 @@ class DateExtension extends \Twig_Extension
 
         $formatter = new \IntlDateFormatter($locale, \IntlDateFormatter::LONG, $time);
         $pattern = $formatter->getPattern();
+
+        //remove any words
+        $pattern = preg_replace("/ '(.*?)' /i", ' ', $pattern);
+        $pattern = preg_replace('/[ ]+/', ' ', $pattern);
 
         //add comma before hours
         $pattern = preg_replace('/ (h)/i', ', ${1}', $pattern);
