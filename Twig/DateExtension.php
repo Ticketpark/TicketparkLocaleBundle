@@ -160,8 +160,7 @@ class DateExtension extends \Twig_Extension
         $formatter = new \IntlDateFormatter($locale, $dateFormat, \IntlDateFormatter::NONE);
 
         //Same day?
-        $diff = $earlier->diff($later);
-        if (0 === (int) $diff->format('%a')) {
+        if ($earlier->format('Y-m-d') == $later->format('Y-m-d')) {
 
             return $formatter->format($earlier);
         }

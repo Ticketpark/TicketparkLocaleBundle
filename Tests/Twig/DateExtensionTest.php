@@ -179,6 +179,7 @@ class DateExtensionTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(new \DateTime('2013-05-27 20:00:00'), new \DateTime('2013-05-29 14:00:00'), 'Montag, 27. Mai 2013 - Mittwoch, 29. Mai 2013' , 'de'),
+            array(new \DateTime('2013-05-27 20:00:00'), new \DateTime('2013-05-28 16:00:00'), 'Montag, 27. Mai 2013 - Dienstag, 28. Mai 2013' , 'de'),
             array(new \DateTime('2013-05-27 20:00:00'), new \DateTime('2013-05-27 22:00:00'), 'Montag, 27. Mai 2013' , 'de'),
             array(new \DateTime('2013-05-27 20:00:00'), new \DateTime('2013-05-29 14:00:00'), 'Monday, May 27, 2013 - Wednesday, May 29, 2013' , 'en'),
             array(new \DateTime('2013-05-27 20:00:00'), new \DateTime('2013-05-27 22:00:00'), 'Monday, May 27, 2013' , 'en'),
